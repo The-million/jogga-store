@@ -2,88 +2,60 @@
 
 import { motion } from "framer-motion";
 import { Package, Clock, CheckCircle2, Truck, MapPin } from "lucide-react";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 const orders = [
-  {
-    id: "JOGGA-2026-0001",
-    date: "27 juin 2026",
-    total: 55000,
-    status: "IN_TRANSIT",
-    eta: "Aujourd'hui, 14:30",
-    items: 3,
-  },
-  {
-    id: "JOGGA-2026-0002",
-    date: "25 juin 2026",
-    total: 12000,
-    status: "DELIVERED",
-    items: 1,
-  },
+  { id: "JOGGA-2026-0042", date: "27 juin 2026", total: 55000, status: "IN_TRANSIT", eta: "14:30", items: 3 },
+  { id: "JOGGA-2026-0038", date: "25 juin 2026", total: 12000, status: "DELIVERED", items: 1 },
+  { id: "JOGGA-2026-0031", date: "20 juin 2026", total: 34000, status: "DELIVERED", items: 2 },
 ];
 
-const statusConfig: Record<string, { icon: typeof Package; label: string; color: string }> = {
-  CONFIRMED: { icon: CheckCircle2, label: "Confirmée", color: "text-accent" },
+const statusIcons: Record<string, { icon: typeof Package; label: string; color: string }> = {
+  CONFIRMED: { icon: CheckCircle2, label: "Confirmée", color: "text-primary" },
   PREPARING: { icon: Package, label: "En préparation", color: "text-accent" },
-  IN_TRANSIT: { icon: Truck, label: "En route", color: "text-sage" },
-  DELIVERED: { icon: CheckCircle2, label: "Livrée", color: "text-sage" },
+  IN_TRANSIT: { icon: Truck, label: "En route", color: "text-accent" },
+  DELIVERED: { icon: CheckCircle2, label: "Livrée", color: "text-green-600" },
 };
 
 export default function OrdersPage() {
+  const { formatPrice } = useCurrency();
+
   return (
-    <div className="max-w-md mx-auto px-4 pt-4">
-      <h1 className="text-xl font-bold text-text mb-6">Mes Commandes</h1>
-
-      <div className="space-y-3">
+    <div className="max-w-md mx-auto bg-white min-h-dvh">
+      <header className="sticky top-0 z-40 bg-white border-b border-border px-4 py-3">
+        <h1 className="text-sm font-black text-text uppercase tracking-wider">Mes Commandes</h1>
+      </header>
+      <div className="p-4 space-y-3">
         {orders.map((order, i) => {
-          const config = statusConfig[order.status] || statusConfig.CONFIRMED;
-          const Icon = config.icon;
+          const s = statusIcons[order.status];
+          const Icon = s.icon;
           return (
-            <motion.div
-              key={order.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="glass-strong p-4"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-mono text-text-muted bg-cream px-2 py-1 rounded-full">
-                  {order.id}
-                </span>
-                <span className="text-xs text-text-muted">{order.date}</span>
+            <motion.div key={order.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+              className="bg-surface rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-mono text-text-muted bg-white px-2 py-0.5 rounded-full">{order.id}</span>
+                <span className="text-[10px] text-text-muted">{order.date}</span>
               </div>
-
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Icon size={18} className={config.color} />
-                  <span className={`text-sm font-medium ${config.color}`}>
-                    {config.label}
-                  </span>
+                  <Icon size={17} className={s.color} />
+                  <span className={`text-xs font-bold ${s.color}`}>{s.label}</span>
                 </div>
-                <span className="text-sm font-bold text-primary">
-                  {order.total.toLocaleString()} FC
-                </span>
+                <span className="text-sm font-black text-primary">{formatPrice(order.total)}</span>
               </div>
-
-              {order.status === "IN_TRANSIT" && order.eta && (
-                <div className="glass p-3 rounded-xl flex items-center gap-2">
-                  <Clock size={14} className="text-accent" />
-                  <span className="text-xs text-text-muted">
-                    Arrivée estimée : <span className="font-semibold text-text">{order.eta}</span>
-                  </span>
+              {order.eta && (
+                <div className="bg-white rounded-xl p-2.5 flex items-center gap-2">
+                  <Clock size={13} className="text-accent" />
+                  <span className="text-[11px] text-text-muted">Arrivée estimée : <span className="font-bold text-text">Aujourd&apos;hui, {order.eta}</span></span>
                 </div>
               )}
-
               {order.status === "DELIVERED" && (
-                <div className="glass p-3 rounded-xl flex items-center gap-2">
-                  <MapPin size={14} className="text-sage" />
-                  <span className="text-xs text-sage font-medium">Livrée avec succès</span>
+                <div className="bg-white rounded-xl p-2.5 flex items-center gap-2">
+                  <MapPin size={13} className="text-green-600" />
+                  <span className="text-[11px] text-green-600 font-semibold">Livrée avec succès</span>
                 </div>
               )}
-
-              <div className="flex items-center gap-1 mt-3 text-xs text-text-muted">
-                <Package size={12} />
-                {order.items} article{order.items > 1 ? "s" : ""}
-              </div>
+              <p className="text-[10px] text-text-muted mt-2">{order.items} article{order.items > 1 ? "s" : ""}</p>
             </motion.div>
           );
         })}
