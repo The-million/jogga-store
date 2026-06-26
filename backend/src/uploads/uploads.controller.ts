@@ -7,43 +7,41 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname, join } from 'path';
 import { JwtAuthGuard } from '../auth/auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Controller('uploads')
 export class UploadsController {
+  constructor(private readonly cloudinary: CloudinaryService) {}
+
   @Post('product-image')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: diskStorage({
-        destination: join(process.cwd(), 'uploads', 'products'),
-        filename: (_req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          cb(null, uniqueSuffix + extname(file.originalname));
-        },
-      }),
+      limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
       fileFilter: (_req, file, cb) => {
         if (!file.mimetype.match(/^image\/(jpeg|png|webp|gif)$/)) {
-          cb(new BadRequestException('Seules les images JPEG, PNG, WEBP et GIF sont acceptées'), false);
+          cb(new BadRequestException('JPEG, PNG, WEBP ou GIF uniquement'), false);
           return;
         }
         cb(null, true);
       },
-      limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
     }),
   )
   async uploadProductImage(@UploadedFile() file: Express.Multer.File) {
     if (!file) throw new BadRequestException('Fichier requis');
+
+    const result = await this.cloudinary.uploadImage(file, 'jogga-store/products');
+
     return {
-      url: `/uploads/products/${file.filename}`,
-      filename: file.filename,
-      size: file.size,
-      mimetype: file.mimetype,
+      url: result.url,
+      public_id: result.public_id,
+      width: result.width,
+      height: result.height,
+      format: result.format,
     };
   }
 }

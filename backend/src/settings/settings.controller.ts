@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Patch, Body, UseGuards } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { JwtAuthGuard } from '../auth/auth.guard';
 import { Roles } from '../auth/roles.decorator';
@@ -38,5 +38,15 @@ export class SettingsController {
   async setHeroSlides(@Body() body: { slides: any[] }) {
     await this.settingsService.setHeroSlides(body.slides);
     return { heroSlides: body.slides };
+  }
+
+  @Patch()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async patchSettings(@Body() body: Record<string, any>) {
+    await Promise.all(
+      Object.entries(body).map(([key, value]) => this.settingsService.set(key, value)),
+    );
+    return this.settingsService.getAllSettings();
   }
 }

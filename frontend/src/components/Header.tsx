@@ -5,14 +5,17 @@ import { Menu, Search, ShoppingCart, X, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCurrency } from "@/lib/CurrencyContext";
+import { useCart } from "@/lib/CartContext";
 
 const menuItems = [
   { label: "Accueil", href: "/" },
   { label: "Nouveautés", href: "/search?new=1" },
-  { label: "Super Offres", href: "/search?category=promos" },
-  { label: "Tendances", href: "/search?category=tendances" },
-  { label: "Zone Marques", href: "/search?category=marques" },
-  { label: "Meilleures Ventes", href: "/search?category=best-sellers" },
+  { label: "Mode Homme", href: "/category/mode-homme" },
+  { label: "Mode Femme", href: "/category/mode-femme" },
+  { label: "Électronique", href: "/category/electronique" },
+  { label: "Maison & Déco", href: "/category/maison" },
+  { label: "Sport & Fitness", href: "/category/sport" },
+  { label: "Beauté & Soin", href: "/category/beaute" },
   { label: "Mon Profil", href: "/account" },
   { label: "Mes Commandes", href: "/orders" },
 ];
@@ -20,6 +23,7 @@ const menuItems = [
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { currency, setCurrency } = useCurrency();
+  const { itemCount } = useCart();
 
   return (
     <>
@@ -29,8 +33,9 @@ export function Header() {
             <Menu size={22} className="text-text" />
           </button>
 
-          <Link href="/" className="text-lg font-black text-primary tracking-tight uppercase no-underline">
-            JOGGA <span className="text-text">STORE</span>
+          <Link href="/" className="no-underline">
+            <span className="font-playfair italic text-xl font-black text-primary tracking-tight">Jogga</span>
+            <span className="font-bebas text-xl text-text tracking-widest ml-1">STORE</span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -39,7 +44,9 @@ export function Header() {
             </Link>
             <Link href="/cart" className="p-1.5 relative">
               <ShoppingCart size={20} className="text-text" />
-              <span className="badge-cart absolute -top-0.5 -right-0.5">3</span>
+              {itemCount > 0 && (
+                <span className="badge-cart absolute -top-0.5 -right-0.5">{itemCount > 99 ? "99+" : itemCount}</span>
+              )}
             </Link>
           </div>
         </div>
@@ -54,7 +61,7 @@ export function Header() {
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               className="fixed top-0 left-0 bottom-0 w-72 bg-white z-50 shadow-2xl flex flex-col">
               <div className="flex items-center justify-between p-4 border-b border-border">
-                <span className="text-sm font-black text-primary uppercase">Menu</span>
+                <span className="font-playfair italic text-primary font-black text-lg">Jogga Store</span>
                 <button onClick={() => setMenuOpen(false)} className="p-1"><X size={20} /></button>
               </div>
               <nav className="p-2 flex-1 overflow-y-auto">
@@ -66,24 +73,37 @@ export function Header() {
                 ))}
               </nav>
 
-              {/* Currency switcher in menu */}
               <div className="border-t border-border p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <DollarSign size={16} className="text-text-muted" />
-                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Devise</span>
-                </div>
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-3">Devise</p>
                 <div className="flex gap-2">
-                  <button onClick={() => setCurrency("CDF")}
-                    className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                      currency === "CDF" ? "bg-primary text-white" : "bg-surface text-text-muted"
-                    }`}>
-                    FC — Franc
+                  {/* CDF — Franc */}
+                  <button
+                    onClick={() => setCurrency("CDF")}
+                    className={`flex-1 rounded-2xl p-3 text-left transition-all border-2 ${
+                      currency === "CDF"
+                        ? "border-primary bg-primary/5"
+                        : "border-transparent bg-surface"
+                    }`}
+                  >
+                    <div className="text-base mb-0.5">🇨🇩</div>
+                    <p className={`text-xs font-black ${currency === "CDF" ? "text-primary" : "text-text"}`}>FC</p>
+                    <p className="text-[9px] text-text-muted font-medium">Franc Congolais</p>
                   </button>
-                  <button onClick={() => setCurrency("USD")}
-                    className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                      currency === "USD" ? "bg-primary text-white" : "bg-surface text-text-muted"
-                    }`}>
-                    $ — Dollar
+
+                  {/* USD — Dollar */}
+                  <button
+                    onClick={() => setCurrency("USD")}
+                    className={`flex-1 rounded-2xl p-3 text-left transition-all border-2 ${
+                      currency === "USD"
+                        ? "border-blue-600 bg-blue-600 text-white"
+                        : "border-blue-100 bg-blue-50"
+                    }`}
+                  >
+                    <div className="text-base mb-0.5">🇺🇸</div>
+                    <p className={`text-xs font-black flex items-center gap-1 ${currency === "USD" ? "text-white" : "text-blue-700"}`}>
+                      <DollarSign size={11} className="inline" />USD
+                    </p>
+                    <p className={`text-[9px] font-medium ${currency === "USD" ? "text-blue-100" : "text-blue-500"}`}>Dollar Américain</p>
                   </button>
                 </div>
               </div>

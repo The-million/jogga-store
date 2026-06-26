@@ -1,4 +1,4 @@
-import { IsString, IsNumber, Min } from 'class-validator';
+import { IsString, IsNumber, Min, IsOptional, IsObject } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class AddToCartDto {
@@ -9,6 +9,10 @@ export class AddToCartDto {
   @Min(1)
   @Type(() => Number)
   quantity!: number;
+
+  @IsOptional()
+  @IsObject()
+  variantLabel?: Record<string, string>;
 }
 
 export class UpdateCartItemDto {

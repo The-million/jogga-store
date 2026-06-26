@@ -27,7 +27,7 @@ export class CartService {
     return cart;
   }
 
-  async addItem(userId: string, productId: string, quantity: number) {
+  async addItem(userId: string, productId: string, quantity: number, variantLabel?: Record<string, string>) {
     const product = await this.prisma.product.findUnique({ where: { id: productId } });
     if (!product) throw new NotFoundException('Produit introuvable');
     if (!product.isActive) throw new BadRequestException('Produit indisponible');

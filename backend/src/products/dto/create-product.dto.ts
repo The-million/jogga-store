@@ -18,6 +18,12 @@ export class CreateProductDto {
   @Type(() => Number)
   price!: number;
 
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Type(() => Number)
+  comparePrice?: number | null;
+
   @IsNumber()
   @Min(0)
   @Type(() => Number)
@@ -34,4 +40,15 @@ export class CreateProductDto {
   @IsOptional()
   @IsBoolean()
   isActive?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isNew?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isFeatured?: boolean;
+
+  @IsOptional()
+  variants?: { name: string; values: string[] }[];
 }

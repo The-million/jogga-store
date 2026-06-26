@@ -63,8 +63,24 @@ body {
   font-family: var(--font-display);
 }
 
+.font-bebas {
+  font-family: var(--font-bebas);
+  letter-spacing: 0.08em;
+}
+
+.font-playfair {
+  font-family: var(--font-playfair);
+}
+
 .price-tag {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+.section-title {
+  font-family: var(--font-bebas);
+  letter-spacing: 0.1em;
+  font-size: 1.25rem;
+  color: var(--color-text);
 }

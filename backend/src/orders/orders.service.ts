@@ -87,12 +87,22 @@ export class OrdersService {
     return order;
   }
 
+  private transformProduct(p: any) {
+    const urls: string[] = Array.isArray(p.imageUrls) ? p.imageUrls : [];
+    return { ...p, imageUrl: urls[0] ?? null, price: Number(p.price), comparePrice: p.comparePrice != null ? Number(p.comparePrice) : null };
+  }
+
   async findByUser(userId: string) {
-    return this.prisma.order.findMany({
+    const orders = await this.prisma.order.findMany({
       where: { userId },
       include: { items: { include: { product: true } }, statuses: true },
       orderBy: { createdAt: 'desc' },
     });
+    return orders.map((o) => ({
+      ...o,
+      totalAmount: Number(o.totalAmount),
+      items: o.items.map((i) => ({ ...i, unitPrice: Number(i.unitPrice), product: this.transformProduct(i.product) })),
+    }));
   }
 
   async findById(orderId: string) {
@@ -101,13 +111,24 @@ export class OrdersService {
       include: { items: { include: { product: true } }, statuses: true },
     });
     if (!order) throw new NotFoundException('Commande introuvable');
-    return order;
+    return {
+      ...order,
+      totalAmount: Number(order.totalAmount),
+      items: order.items.map((i) => ({ ...i, unitPrice: Number(i.unitPrice), product: this.transformProduct(i.product) })),
+    };
   }
 
   async findAll() {
     return this.prisma.order.findMany({
       include: { items: true, statuses: true, user: { select: { id: true, fullName: true, phone: true } } },
       orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async updateStatus(orderId: string, status: string, note: string | undefined, updatedBy: string) {
+    await this.findById(orderId);
+    return this.prisma.deliveryStatus.create({
+      data: { status: status as any, note: note ?? null, updatedBy, orderId },
     });
   }
 

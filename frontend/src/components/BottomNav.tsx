@@ -5,19 +5,30 @@ import { Suspense } from "react";
 import { motion } from "framer-motion";
 import { Home, Grid3X3, Sparkles, ShoppingBag, User } from "lucide-react";
 import { clsx } from "clsx";
+import { useCart } from "@/lib/CartContext";
 
 const tabs = [
-  { id: "home", label: "Accueil", icon: Home, path: "/" },
-  { id: "categories", label: "Rayons", icon: Grid3X3, path: "/search" },
-  { id: "new", label: "News", icon: Sparkles, path: "/search?new=1" },
-  { id: "cart", label: "Panier", icon: ShoppingBag, path: "/cart" },
-  { id: "profile", label: "Moi", icon: User, path: "/account" },
+  { id: "home",       label: "Accueil",  icon: Home,       path: "/" },
+  { id: "categories", label: "Rayons",   icon: Grid3X3,    path: "/search" },
+  { id: "new",        label: "News",     icon: Sparkles,   path: "/search?new=1" },
+  { id: "cart",       label: "Panier",   icon: ShoppingBag, path: "/cart" },
+  { id: "profile",    label: "Moi",      icon: User,       path: "/account" },
 ];
+
+function CartBadge({ count }: { count: number }) {
+  if (count === 0) return null;
+  return (
+    <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] bg-accent text-white text-[8px] font-black rounded-full flex items-center justify-center px-0.5 leading-none z-20">
+      {count > 99 ? "99+" : count}
+    </span>
+  );
+}
 
 function BottomNavInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { itemCount } = useCart();
   const isNewParam = searchParams.get("new") === "1";
 
   const isActive = (tab: typeof tabs[0]) => {
@@ -45,8 +56,11 @@ function BottomNavInner() {
                 <motion.div layoutId="nav-active" className="absolute inset-1 bg-primary/10 rounded-2xl"
                   transition={{ type: "spring", stiffness: 400, damping: 30 }} />
               )}
-              <Icon size={20} strokeWidth={active ? 2.2 : 1.5}
-                className={clsx("relative z-10 transition-colors", active ? "text-primary" : "text-text-muted")} />
+              <span className="relative z-10">
+                <Icon size={20} strokeWidth={active ? 2.2 : 1.5}
+                  className={clsx("transition-colors", active ? "text-primary" : "text-text-muted")} />
+                {tab.id === "cart" && <CartBadge count={itemCount} />}
+              </span>
               <span className={clsx("text-[9px] font-semibold relative z-10 transition-colors", active ? "text-primary" : "text-text-muted")}>
                 {tab.label}
               </span>

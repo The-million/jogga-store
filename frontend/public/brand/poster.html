@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogga Store — Poster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700;1,900&family=Bebas+Neue&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 800px;
+      height: 1130px;
+      background: #030810;
+      overflow: hidden;
+    }
+
+    .poster {
+      width: 800px;
+      height: 1130px;
+      background: #050d1a;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── ARRIÈRE-PLAN DÉCORATIF ─────────────────── */
+
+    /* Grand cercle semi-transparent */
+    .bg-circle-main {
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(59,130,246,0.12);
+      top: -200px;
+      right: -260px;
+      pointer-events: none;
+    }
+    .bg-circle-2 {
+      width: 700px;
+      height: 700px;
+      top: -120px;
+      right: -180px;
+      border-color: rgba(59,130,246,0.07);
+    }
+    .bg-circle-3 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(14,165,233,0.08);
+      bottom: 120px;
+      left: -180px;
+    }
+
+    /* Glow haut */
+    .glow-top {
+      position: absolute;
+      width: 600px;
+      height: 500px;
+      top: -150px;
+      right: -100px;
+      background: radial-gradient(ellipse at 60% 40%, rgba(30,64,175,0.35) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* Glow bas-gauche */
+    .glow-bottom {
+      position: absolute;
+      width: 500px;
+      height: 400px;
+      bottom: 0;
+      left: -100px;
+      background: radial-gradient(ellipse at 40% 60%, rgba(14,165,233,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* Bande diagonale bleue */
+    .diagonal-band {
+      position: absolute;
+      width: 6px;
+      height: 900px;
+      background: linear-gradient(180deg, transparent 0%, #1E40AF 25%, #3B82F6 50%, #0EA5E9 75%, transparent 100%);
+      top: 120px;
+      left: 66px;
+      transform: rotate(-8deg);
+      opacity: 0.6;
+    }
+    .diagonal-band-2 {
+      width: 2px;
+      left: 52px;
+      opacity: 0.25;
+    }
+
+    /* Points grille */
+    .dots {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      bottom: 200px;
+      right: 50px;
+      opacity: 0.08;
+      background-image: radial-gradient(circle, #60A5FA 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+
+    /* Ligne fine haut */
+    .top-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #1E40AF 20%, #3B82F6 50%, #0EA5E9 80%, transparent);
+    }
+
+    /* Ligne fine bas */
+    .bottom-line {
+      position: absolute;
+      bottom: 88px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(59,130,246,0.4) 30%, rgba(14,165,233,0.4) 70%, transparent);
+    }
+
+    /* ── SECTION 1 — NOM DE MARQUE ──────────────── */
+
+    .brand-section {
+      position: absolute;
+      top: 100px;
+      left: 90px;
+      right: 60px;
+    }
+
+    /* Micro badge */
+    .micro-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #3B82F6;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .micro-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1.5px;
+      background: #3B82F6;
+    }
+
+    .jogga {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 168px;
+      line-height: 0.9;
+      color: #FFFFFF;
+      letter-spacing: -6px;
+      text-shadow: 0 0 120px rgba(59,130,246,0.3);
+    }
+
+    .store-word {
+      font-family: 'Bebas Neue', Impact, sans-serif;
+      font-size: 82px;
+      font-weight: 400;
+      letter-spacing: 28px;
+      color: #3B82F6;
+      display: block;
+      margin-top: -8px;
+      margin-left: 6px;
+    }
+
+    /* ── SECTION 2 — TRAITS DIVISEURS + TAG ─────── */
+
+    .divider {
+      position: absolute;
+      top: 470px;
+      left: 90px;
+      right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(59,130,246,0.6), rgba(14,165,233,0.2));
+    }
+    .divider-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .divider-line-right {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(14,165,233,0.2), rgba(59,130,246,0.1));
+    }
+
+    /* ── SECTION 3 — CATÉGORIES ─────────────────── */
+
+    .categories {
+      position: absolute;
+      top: 510px;
+      left: 90px;
+      right: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cat-item {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+    }
+
+    .cat-number {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 13px;
+      color: #3B82F6;
+      font-weight: 700;
+      min-width: 24px;
+      opacity: 0.8;
+    }
+
+    .cat-name {
+      font-family: 'Bebas Neue', Impact, sans-serif;
+      font-size: 58px;
+      letter-spacing: 6px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1;
+      font-weight: 400;
+    }
+
+    .cat-tag {
+      margin-left: auto;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.2);
+      text-transform: uppercase;
+      align-self: center;
+    }
+
+    /* ── SECTION 4 — TAGLINE ─────────────────────── */
+
+    .tagline-section {
+      position: absolute;
+      top: 870px;
+      left: 90px;
+      right: 60px;
+    }
+
+    .tagline-quote {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 32px;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+    }
+
+    .tagline-quote span {
+      color: #60A5FA;
+    }
+
+    .tagline-sub {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 2px;
+      margin-top: 12px;
+      text-transform: uppercase;
+    }
+
+    /* ── SECTION 5 — PIED DE PAGE ───────────────── */
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 88px;
+      background: rgba(30,64,175,0.12);
+      border-top: 1px solid rgba(59,130,246,0.15);
+      display: flex;
+      align-items: center;
+      padding: 0 90px;
+      gap: 0;
+      justify-content: space-between;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .footer-brand .j {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 28px;
+      color: white;
+    }
+    .footer-brand .s {
+      font-family: 'Bebas Neue', Impact, sans-serif;
+      font-size: 22px;
+      letter-spacing: 5px;
+      color: #3B82F6;
+    }
+
+    .footer-info {
+      text-align: right;
+    }
+    .footer-info p {
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 1.5px;
+      font-weight: 400;
+    }
+    .footer-info strong {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Puce accent footer */
+    .footer-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3B82F6, #0EA5E9);
+      margin: 0 auto 4px;
+    }
+    .footer-center {
+      text-align: center;
+    }
+    .footer-center .footer-dot { margin: 0 auto 6px; }
+    .footer-slogan {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+
+    <!-- Arrière-plan décoratif -->
+    <div class="glow-top"></div>
+    <div class="glow-bottom"></div>
+    <div class="bg-circle-main"></div>
+    <div class="bg-circle-main bg-circle-2"></div>
+    <div class="bg-circle-3"></div>
+    <div class="diagonal-band"></div>
+    <div class="diagonal-band diagonal-band-2"></div>
+    <div class="dots"></div>
+    <div class="top-line"></div>
+    <div class="bottom-line"></div>
+
+    <!-- Section 1 — Nom de marque -->
+    <div class="brand-section">
+      <div class="micro-label">Depuis 2024 · Kinshasa</div>
+      <div class="jogga">Jogga</div>
+      <span class="store-word">STORE</span>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-badge">Collections &amp; Services</div>
+      <div class="divider-line-right"></div>
+    </div>
+
+    <!-- Section 3 — Catégories -->
+    <div class="categories">
+      <div class="cat-item">
+        <span class="cat-number">01</span>
+        <span class="cat-name">MODE</span>
+        <span class="cat-tag">Homme · Femme</span>
+      </div>
+      <div class="cat-item">
+        <span class="cat-number">02</span>
+        <span class="cat-name">TECH</span>
+        <span class="cat-tag">Électronique</span>
+      </div>
+      <div class="cat-item">
+        <span class="cat-number">03</span>
+        <span class="cat-name">SPORT</span>
+        <span class="cat-tag">Fitness · Plein air</span>
+      </div>
+      <div class="cat-item">
+        <span class="cat-number">04</span>
+        <span class="cat-name">LIFESTYLE</span>
+        <span class="cat-tag">Maison · Beauté</span>
+      </div>
+    </div>
+
+    <!-- Section 4 — Tagline -->
+    <div class="tagline-section">
+      <p class="tagline-quote">
+        Votre lifestyle,<br>
+        <span>redéfini.</span>
+      </p>
+      <p class="tagline-sub">Livraison rapide · Paiement sécurisé · Service 24/7</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-brand">
+        <span class="j">J</span>
+        <span class="s">STORE</span>
+      </div>
+      <div class="footer-center">
+        <div class="footer-dot"></div>
+        <span class="footer-slogan">Tout en un, pour vous.</span>
+      </div>
+      <div class="footer-info">
+        <p>JOGGA STORE</p>
+        <strong>www.jogga.store</strong>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

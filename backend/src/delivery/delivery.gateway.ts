@@ -5,17 +5,42 @@ import {
   OnGatewayConnection,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { JwtService } from '@nestjs/jwt';
 
-@WebSocketGateway({ cors: { origin: '*' } })
+@WebSocketGateway({
+  cors: {
+    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+    credentials: true,
+  },
+})
 export class DeliveryGateway implements OnGatewayConnection {
   @WebSocketServer()
   server!: Server;
 
+  constructor(private readonly jwtService: JwtService) {}
+
   handleConnection(client: Socket) {
-    // Le client peut rejoindre une room pour écouter sa commande
-    const orderId = client.handshake.query.orderId as string;
-    if (orderId) {
-      client.join(`order:${orderId}`);
+    const token =
+      (client.handshake.auth?.token as string) ||
+      (client.handshake.headers?.authorization as string)?.replace('Bearer ', '');
+
+    if (!token) {
+      client.disconnect();
+      return;
+    }
+
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: process.env.JWT_SECRET || 'dev-secret-change-me',
+      });
+      (client as any).userId = payload.sub;
+
+      const orderId = client.handshake.query.orderId as string;
+      if (orderId) {
+        client.join(`order:${orderId}`);
+      }
+    } catch {
+      client.disconnect();
     }
   }
 
@@ -25,7 +50,6 @@ export class DeliveryGateway implements OnGatewayConnection {
     return { event: 'subscribed', orderId };
   }
 
-  // Appelé par le service pour broadcaster un changement de statut
   emitStatusChange(orderId: string, status: any) {
     this.server.to(`order:${orderId}`).emit('delivery:statusChanged', status);
   }

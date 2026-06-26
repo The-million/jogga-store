@@ -52,7 +52,7 @@ export class DeliveryService {
       include: {
         items: { include: { product: { select: { name: true, price: true } } } },
         statuses: { orderBy: { createdAt: 'desc' }, take: 1 },
-        user: { select: { fullName: true, phone: true, address: true } },
+        user: { select: { fullName: true, phone: true } },
       },
       orderBy: { createdAt: 'asc' },
     });

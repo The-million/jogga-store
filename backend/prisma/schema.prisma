@@ -14,11 +14,16 @@ model User {
   fullName     String
   phone        String    @unique
   role         Role      @default(CUSTOMER)
-  address      String?
+  avatarUrl    String?
+  birthDate    DateTime?
 
-  cart     Cart?
-  orders   Order[]
+  cart      Cart?
+  orders    Order[]
+  addresses Address[]
+  reviews   Review[]
+  wishlist  WishlistItem[]
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
@@ -55,16 +60,23 @@ model Product {
   slug          String    @unique
   description   String
   price         Decimal   @db.Decimal(10, 2)
+  comparePrice  Decimal?  @db.Decimal(10, 2)
   stockQuantity Int       @default(0)
   imageUrls     Json      @default("[]")
   isActive      Boolean   @default(true)
+  isNew         Boolean   @default(false)
+  isFeatured    Boolean   @default(false)
+  variants      Json      @default("[]") // [{ name: "Taille", values: ["S","M","L"] }]
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
 
-  cartItems  CartItem[]
-  orderItems OrderItem[]
-  createdAt  DateTime @default(now())
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
+  reviews      Review[]
+  wishlistItems WishlistItem[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 // ─── Panier Persistant ───
@@ -77,14 +89,33 @@ model Cart {
 }
 
 model CartItem {
-  id       String @id @default(cuid())
-  quantity Int    @default(1)
+  id             String @id @default(cuid())
+  quantity       Int    @default(1)
+  variantLabel   Json?  // { "Taille": "M", "Couleur": "Rouge" }
 
   cartId String
   cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
   productId String
   product   Product @relation(fields: [productId], references: [id])
+}
+
+// ─── Adresses de livraison ───
+model Address {
+  id        String  @id @default(cuid())
+  label     String  // "Maison", "Bureau", "Autre"
+  fullName  String
+  phone     String
+  street    String
+  city      String
+  isDefault Boolean @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ─── Commandes ───
@@ -98,6 +129,9 @@ model Order {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
+  addressId String?
+  address   Address? @relation(fields: [addressId], references: [id])
+
   items    OrderItem[]
   statuses DeliveryStatus[]
   invoice  Invoice?
@@ -106,9 +140,10 @@ model Order {
 }
 
 model OrderItem {
-  id        String  @id @default(cuid())
-  quantity  Int
-  unitPrice Decimal @db.Decimal(10, 2) // prix figé au moment de la commande
+  id           String  @id @default(cuid())
+  quantity     Int
+  unitPrice    Decimal @db.Decimal(10, 2)
+  variantLabel Json?   // { "Taille": "M", "Couleur": "Rouge" }
 
   orderId String
   order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -150,4 +185,38 @@ model Invoice {
   order   Order  @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now())
+}
+
+// ─── Avis produits ───
+model Review {
+  id        String  @id @default(cuid())
+  rating    Int     // 1 à 5
+  comment   String?
+  isVisible Boolean @default(true)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId]) // un seul avis par utilisateur par produit
+}
+
+// ─── Liste de souhaits ───
+model WishlistItem {
+  id        String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }

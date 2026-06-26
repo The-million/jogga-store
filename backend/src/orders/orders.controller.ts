@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Req, UseGuards, ForbiddenException } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CheckoutDto } from './dto/checkout.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 import { JwtAuthGuard } from '../auth/auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
@@ -21,8 +22,13 @@ export class OrdersController {
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string) {
-    return this.ordersService.findById(id);
+  async findById(@Req() req: any, @Param('id') id: string) {
+    const order = await this.ordersService.findById(id);
+    const isAdminOrDelivery = ['ADMIN', 'DELIVERY'].includes(req.user.role);
+    if (!isAdminOrDelivery && order.userId !== req.user.id) {
+      throw new ForbiddenException('Accès non autorisé à cette commande');
+    }
+    return order;
   }
 
   @Get()
@@ -30,5 +36,12 @@ export class OrdersController {
   @Roles('ADMIN', 'DELIVERY')
   async findAll() {
     return this.ordersService.findAll();
+  }
+
+  @Patch(':id/status')
+  @UseGuards(RolesGuard)
+  @Roles('ADMIN', 'DELIVERY')
+  async updateStatus(@Req() req: any, @Param('id') id: string, @Body() dto: UpdateStatusDto) {
+    return this.ordersService.updateStatus(id, dto.status, dto.note, req.user.id);
   }
 }

@@ -15,7 +15,7 @@ export class CartController {
 
   @Post('items')
   async addItem(@Req() req: any, @Body() dto: AddToCartDto) {
-    return this.cartService.addItem(req.user.id, dto.productId, dto.quantity);
+    return this.cartService.addItem(req.user.id, dto.productId, dto.quantity, dto.variantLabel);
   }
 
   @Put('items/:itemId')

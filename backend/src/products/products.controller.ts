@@ -15,6 +15,13 @@ export class ProductsController {
     return this.productsService.findAll(categorySlug);
   }
 
+  @Get('admin/all')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async findAllAdmin() {
+    return this.productsService.findAllAdmin();
+  }
+
   @Get(':slug')
   async findBySlug(@Param('slug') slug: string) {
     return this.productsService.findBySlug(slug);

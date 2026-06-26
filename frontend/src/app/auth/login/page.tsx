@@ -1,29 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/lib/AuthContext";
 
-export default function LoginPage() {
+function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
-    // Simulation — à connecter à l'API POST /auth/login
-    await new Promise((r) => setTimeout(r, 1500));
-    setLoading(false);
-    // Redirection vers l'accueil après login réussi
-    window.location.href = "/";
+    try {
+      await login(email, password);
+      const redirect = searchParams.get("redirect") || "/";
+      router.replace(redirect);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Connexion échouée");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="max-w-md mx-auto bg-white min-h-dvh flex flex-col">
-      {/* Header */}
       <div className="px-4 py-3 flex items-center gap-3 border-b border-slate-100">
         <Link href="/" className="p-1.5 -ml-1.5">
           <ArrowLeft size={21} />
@@ -31,9 +42,7 @@ export default function LoginPage() {
         <h1 className="text-sm font-black text-text uppercase tracking-wider">Connexion</h1>
       </div>
 
-      {/* Form */}
       <div className="flex-1 flex flex-col justify-center px-6">
-        {/* Logo */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-black text-primary tracking-tight uppercase">
             JOGGA <span className="text-text">STORE</span>
@@ -41,8 +50,18 @@ export default function LoginPage() {
           <p className="text-xs text-text-muted mt-2">Connectez-vous à votre compte</p>
         </div>
 
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 bg-red-50 text-red-600 text-xs font-semibold rounded-2xl px-4 py-3 mb-4"
+          >
+            <AlertCircle size={15} className="shrink-0" />
+            {error}
+          </motion.div>
+        )}
+
         <form onSubmit={handleLogin} className="space-y-4">
-          {/* Email */}
           <div>
             <label className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5 block">
               Email
@@ -60,7 +79,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Password */}
           <div>
             <label className="text-[11px] font-bold text-text-muted uppercase tracking-wider mb-1.5 block">
               Mot de passe
@@ -85,14 +103,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Forgot password */}
-          <div className="flex justify-end">
-            <Link href="/auth/forgot-password" className="text-[11px] font-semibold text-primary hover:underline">
-              Mot de passe oublié ?
-            </Link>
-          </div>
-
-          {/* Submit */}
           <motion.button
             type="submit"
             disabled={loading}
@@ -110,14 +120,12 @@ export default function LoginPage() {
           </motion.button>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center gap-3 my-6">
           <div className="flex-1 h-px bg-slate-100" />
           <span className="text-[10px] text-text-muted font-semibold uppercase">ou</span>
           <div className="flex-1 h-px bg-slate-100" />
         </div>
 
-        {/* Register link */}
         <p className="text-center text-xs text-text-muted">
           Pas encore de compte ?{" "}
           <Link href="/auth/register" className="text-primary font-bold hover:underline">
@@ -126,7 +134,6 @@ export default function LoginPage() {
         </p>
       </div>
 
-      {/* Footer */}
       <div className="p-4 text-center">
         <p className="text-[10px] text-text-light">
           En vous connectant, vous acceptez nos{" "}
@@ -135,5 +142,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
