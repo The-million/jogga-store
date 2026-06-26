@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { motion } from "framer-motion";
 import { Home, Grid3X3, Sparkles, ShoppingBag, User } from "lucide-react";
 import { clsx } from "clsx";
@@ -10,16 +11,22 @@ const tabs = [
   { id: "categories", label: "Rayons", icon: Grid3X3, path: "/search" },
   { id: "new", label: "News", icon: Sparkles, path: "/search?new=1" },
   { id: "cart", label: "Panier", icon: ShoppingBag, path: "/cart" },
-  { id: "profile", label: "Profil", icon: User, path: "/account" },
+  { id: "profile", label: "Moi", icon: User, path: "/account" },
 ];
 
-export function BottomNav() {
+function BottomNavInner() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const isNewParam = searchParams.get("new") === "1";
 
   const isActive = (tab: typeof tabs[0]) => {
-    if (tab.path === "/") return pathname === "/";
-    return pathname.startsWith(tab.path.split("?")[0]);
+    if (tab.id === "home") return pathname === "/";
+    if (tab.id === "new") return pathname === "/search" && isNewParam;
+    if (tab.id === "categories") return pathname === "/search" && !isNewParam;
+    if (tab.id === "cart") return pathname.startsWith("/cart");
+    if (tab.id === "profile") return pathname.startsWith("/account");
+    return false;
   };
 
   return (
@@ -48,5 +55,13 @@ export function BottomNav() {
         })}
       </div>
     </nav>
+  );
+}
+
+export function BottomNav() {
+  return (
+    <Suspense fallback={<div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-md h-16 bottom-nav-glass rounded-3xl" />}>
+      <BottomNavInner />
+    </Suspense>
   );
 }

@@ -1,4 +1,3 @@
-import { TopBanner } from "@/components/TopBanner";
 import { Header } from "@/components/Header";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Hero } from "@/components/Hero";
@@ -11,7 +10,6 @@ import { BrandZone } from "@/components/BrandZone";
 export default function HomePage() {
   return (
     <div className="max-w-md mx-auto bg-white min-h-dvh">
-      <TopBanner />
       <Header />
       <CategoryNav />
       <Hero />
