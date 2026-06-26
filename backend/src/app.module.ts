@@ -8,11 +8,12 @@ import { OrdersModule } from './orders/orders.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { WhatsAppModule } from './whatsapp/whatsapp.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { SettingsModule } from './settings/settings.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [PrismaModule, AuthModule, CategoriesModule, ProductsModule, CartModule, OrdersModule, DeliveryModule, WhatsAppModule, UploadsModule],
+  imports: [PrismaModule, AuthModule, CategoriesModule, ProductsModule, CartModule, OrdersModule, DeliveryModule, WhatsAppModule, UploadsModule, SettingsModule],
   controllers: [AppController],
   providers: [AppService],
 })

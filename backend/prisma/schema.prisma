@@ -27,13 +27,25 @@ enum Role {
   DELIVERY
 }
 
-// ─── Catégories ───
+// ─── Catégories (hiérarchiques) ───
 model Category {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  slug     String    @unique
+  id       String     @id @default(cuid())
+  name     String
+  slug     String     @unique
   imageUrl String?
+  parentId String?
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryTree")
   products Product[]
+}
+
+// ─── Settings (admin-configurable) ───
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value Json
+
+  updatedAt DateTime @updatedAt
 }
 
 // ─── Produits ───
