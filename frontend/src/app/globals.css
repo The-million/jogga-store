@@ -2,25 +2,24 @@
 
 @theme inline {
   --color-bg: #FFFFFF;
-  --color-surface: #F5F7FA;
-  --color-surface-hover: #EBF0F5;
-  --color-primary: #2563EB;
+  --color-surface: #F8FAFC;
+  --color-primary: #1E40AF;
   --color-primary-light: #3B82F6;
-  --color-primary-dark: #1D4ED8;
-  --color-accent: #F97316;
-  --color-text: #111827;
-  --color-text-muted: #6B7280;
-  --color-text-light: #9CA3AF;
-  --color-border: #E5E7EB;
-  --color-success: #10B981;
+  --color-accent: #0EA5E9;
+  --color-accent-light: #38BDF8;
+  --color-text: #0F172A;
+  --color-text-muted: #64748B;
+  --color-text-light: #94A3B8;
+  --color-border: #E2E8F0;
+  --color-star: #F59E0B;
 
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
 }
 
 body {
   background: #FFFFFF;
   color: var(--color-text);
-  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+  font-family: var(--font-sans, 'Inter', -apple-system, sans-serif);
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
 }
@@ -28,66 +27,34 @@ body {
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-.badge-sale {
+/* Bottom nav liquid glass */
+.bottom-nav-glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.08), 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+/* Badges */
+.badge-discount {
+  background: var(--color-accent);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.badge-cart {
   background: var(--color-accent);
   color: white;
   font-size: 0.6rem;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 3px;
-  letter-spacing: 0.05em;
-}
-
-.badge-new {
-  background: var(--color-primary);
-  color: white;
-  font-size: 0.6rem;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-.badge-count {
-  background: var(--color-accent);
-  color: white;
-  font-size: 0.6rem;
-  font-weight: 700;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 8px;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Nav bar arrondie */
-.nav-glass {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-}
-
-/* Currency toggle pill */
-.toggle-track {
-  background: #E5E7EB;
-  border-radius: 999px;
-  padding: 2px;
-  display: flex;
-  position: relative;
-}
-.toggle-thumb {
-  background: white;
-  border-radius: 999px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.toggle-option {
-  z-index: 1;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 999px;
-  transition: color 0.2s;
 }
