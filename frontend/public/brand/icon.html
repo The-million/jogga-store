@@ -5,7 +5,7 @@
   <title>Jogga Store — Icône</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -28,6 +28,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 0;
       box-shadow:
         0 0 0 1px rgba(59,130,246,0.12),
         inset 0 1px 0 rgba(255,255,255,0.04);
@@ -36,25 +37,25 @@
     /* Glow top-right */
     .glow-tr {
       position: absolute;
-      width: 280px;
-      height: 280px;
-      top: -80px;
-      right: -80px;
-      background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 68%);
+      width: 300px;
+      height: 300px;
+      top: -90px;
+      right: -90px;
+      background: radial-gradient(circle, rgba(59,130,246,0.28) 0%, transparent 68%);
       pointer-events: none;
     }
     /* Glow bottom-left */
     .glow-bl {
       position: absolute;
-      width: 220px;
-      height: 220px;
-      bottom: -60px;
-      left: -60px;
-      background: radial-gradient(circle, rgba(14,165,233,0.18) 0%, transparent 68%);
+      width: 240px;
+      height: 240px;
+      bottom: -70px;
+      left: -70px;
+      background: radial-gradient(circle, rgba(14,165,233,0.20) 0%, transparent 68%);
       pointer-events: none;
     }
 
-    /* Cercles concentriques décoratifs */
+    /* Cercles concentriques */
     .ring {
       position: absolute;
       border-radius: 50%;
@@ -64,58 +65,57 @@
       transform: translate(-50%, -50%);
       pointer-events: none;
     }
-    .ring-1 { width: 320px; height: 320px; }
-    .ring-2 { width: 430px; height: 430px; border-color: rgba(59,130,246,0.05); }
+    .ring-1 { width: 340px; height: 340px; }
+    .ring-2 { width: 460px; height: 460px; border-color: rgba(59,130,246,0.05); }
 
-    /* Ligne diagonale accent */
+    /* Ligne diagonale subtile */
     .slash {
       position: absolute;
-      width: 3px;
-      height: 420px;
-      background: linear-gradient(180deg, transparent 0%, rgba(59,130,246,0.18) 40%, rgba(14,165,233,0.10) 70%, transparent 100%);
+      width: 2px;
+      height: 460px;
+      background: linear-gradient(180deg, transparent 0%, rgba(59,130,246,0.15) 40%, rgba(14,165,233,0.08) 70%, transparent 100%);
       top: 50%;
-      left: 38%;
-      transform: translate(-50%, -50%) rotate(-20deg);
+      left: 42%;
+      transform: translate(-50%, -50%) rotate(-15deg);
       pointer-events: none;
     }
 
-    /* Lettre J */
-    .letter {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-style: italic;
+    /* JGG */
+    .monogram {
+      font-family: 'Montserrat', 'Arial Black', sans-serif;
       font-weight: 900;
-      font-size: 310px;
-      line-height: 0.88;
+      font-size: 148px;
+      line-height: 1;
       color: #ffffff;
       position: relative;
       z-index: 2;
-      letter-spacing: -8px;
+      letter-spacing: -4px;
       text-shadow:
-        0 0 80px rgba(59,130,246,0.4),
-        0 4px 24px rgba(0,0,0,0.5);
+        0 0 60px rgba(59,130,246,0.45),
+        0 2px 20px rgba(0,0,0,0.6);
     }
 
-    /* Séparateur */
+    /* Séparateur fin sous JGG */
     .sep {
-      width: 56px;
+      width: 120px;
       height: 1.5px;
-      background: linear-gradient(90deg, transparent, #3B82F6, #0EA5E9, transparent);
+      background: linear-gradient(90deg, transparent, #38BDF8, transparent);
       position: relative;
       z-index: 2;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-top: 16px;
+      margin-bottom: 14px;
     }
 
     /* STORE */
     .store {
       font-family: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
-      font-size: 54px;
+      font-size: 46px;
       font-weight: 400;
-      letter-spacing: 20px;
-      color: #60A5FA;
+      letter-spacing: 14px;
+      color: #38BDF8;
       position: relative;
       z-index: 2;
-      margin-left: 20px; /* correction optique du tracking */
+      margin-left: 14px; /* correction optique du tracking */
     }
   </style>
 </head>
@@ -126,7 +126,7 @@
     <div class="ring ring-1"></div>
     <div class="ring ring-2"></div>
     <div class="slash"></div>
-    <div class="letter">J</div>
+    <div class="monogram">JGG</div>
     <div class="sep"></div>
     <div class="store">STORE</div>
   </div>
