@@ -1,81 +1,89 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #0A0A0F;
-  --color-surface: #16161F;
-  --color-surface-light: #1E1E2A;
-  --color-primary: #A78BFA;
-  --color-primary-glow: #C4B5FD;
-  --color-accent: #F472B6;
-  --color-accent-glow: #F9A8D4;
-  --color-secondary: #34D399;
-  --color-text: #F1F1F3;
-  --color-text-muted: #71717A;
-  --color-border: #27272A;
+  --color-bg: #FFFFFF;
+  --color-surface: #F8F8F8;
+  --color-surface-hover: #F0F0F0;
+  --color-primary: #FF6B35;
+  --color-primary-dark: #E55A2B;
+  --color-accent: #FF2D55;
+  --color-text: #1A1A1A;
+  --color-text-muted: #8E8E93;
+  --color-text-light: #C7C7CC;
+  --color-border: #F0F0F0;
+  --color-success: #34C759;
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-/* Glass effect — dark theme */
-.glass {
-  background: rgba(22, 22, 31, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(167, 139, 250, 0.08);
-}
-
-.glass-strong {
-  background: rgba(30, 30, 42, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(167, 139, 250, 0.12);
-}
-
-.glass-nav {
-  background: rgba(10, 10, 15, 0.8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(167, 139, 250, 0.1);
-  box-shadow: 0 8px 32px rgba(167, 139, 250, 0.06);
-}
-
-/* Neon glow effects */
-.glow-primary {
-  box-shadow: 0 0 20px rgba(167, 139, 250, 0.15), 0 0 40px rgba(167, 139, 250, 0.05);
-}
-.glow-accent {
-  box-shadow: 0 0 20px rgba(244, 114, 182, 0.15), 0 0 40px rgba(244, 114, 182, 0.05);
-}
-
 body {
-  background: var(--color-bg);
+  background: #FFFFFF;
   color: var(--color-text);
-  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
   min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
 }
 
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-.badge {
+/* Shein-style badges */
+.badge-sale {
   background: var(--color-accent);
-  color: #0A0A0F;
+  color: white;
   font-size: 0.6rem;
-  font-weight: 800;
-  min-width: 1.1rem;
-  height: 1.1rem;
-  border-radius: 999px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+
+.badge-new {
+  background: var(--color-text);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+
+.badge-count {
+  background: var(--color-accent);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 0.3rem;
+  padding: 0 4px;
 }
 
-/* Gradient text */
-.text-gradient {
-  background: linear-gradient(135deg, #A78BFA, #F472B6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Shein-style buttons */
+.btn-primary {
+  background: var(--color-text);
+  color: white;
+  font-weight: 700;
+  border-radius: 0;
+  padding: 14px 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary:active {
+  background: #333;
+}
+
+/* Nav bar glass */
+.nav-glass {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -1px 0 rgba(0,0,0,0.04), 0 -4px 20px rgba(0,0,0,0.04);
 }

@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className="dark">
+    <html lang="fr">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <CurrencyProvider>
-          <main className="pb-28 min-h-dvh">{children}</main>
+          <main className="pb-24 min-h-dvh">{children}</main>
           <NavBar />
         </CurrencyProvider>
       </body>
