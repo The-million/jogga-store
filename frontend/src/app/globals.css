@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Aubergine x Safran x Sauge palette */
+  --color-primary: #6C3B5A;
+  --color-primary-light: #8B5E7A;
+  --color-primary-dark: #4A283D;
+  --color-accent: #E8A838;
+  --color-accent-light: #F0C060;
+  --color-sage: #7D9B76;
+  --color-sage-light: #9DB898;
+  --color-cream: #FAF7F2;
+  --color-surface: #FFFFFF;
+
+  --color-text: #1A1118;
+  --color-text-muted: #6B5E68;
+  --color-text-on-primary: #FFFFFF;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Liquid Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(108, 59, 90, 0.08);
+  border-radius: 1rem;
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(108, 59, 90, 0.12);
+  border-radius: 1.25rem;
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(108, 59, 90, 0.06);
+  border-radius: 2rem;
+  box-shadow: 0 4px 24px rgba(108, 59, 90, 0.08);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #FAF7F2 0%, #F5F0EB 50%, #F0EDE8 100%);
+  color: var(--color-text);
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  min-height: 100dvh;
+}
+
+/* Smooth page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Hide scrollbar but keep scroll */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Badge */
+.badge {
+  background: var(--color-accent);
+  color: var(--color-text);
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.35rem;
 }
