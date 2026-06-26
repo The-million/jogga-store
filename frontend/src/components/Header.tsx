@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, Search, ShoppingCart, X } from "lucide-react";
+import { Menu, Search, ShoppingCart, X, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 const menuItems = [
   { label: "Accueil", href: "/" },
@@ -18,6 +19,7 @@ const menuItems = [
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { currency, setCurrency } = useCurrency();
 
   return (
     <>
@@ -43,48 +45,52 @@ export function Header() {
         </div>
       </header>
 
-      {/* Slide-out menu */}
       <AnimatePresence>
         {menuOpen && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black z-50"
-              onClick={() => setMenuOpen(false)}
-            />
-            <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.5 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black z-50" onClick={() => setMenuOpen(false)} />
+            <motion.div initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 left-0 bottom-0 w-72 bg-white z-50 shadow-2xl"
-            >
+              className="fixed top-0 left-0 bottom-0 w-72 bg-white z-50 shadow-2xl flex flex-col">
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <span className="text-sm font-black text-primary uppercase">Menu</span>
-                <button onClick={() => setMenuOpen(false)} className="p-1">
-                  <X size={20} />
-                </button>
+                <button onClick={() => setMenuOpen(false)} className="p-1"><X size={20} /></button>
               </div>
-              <nav className="p-2">
+              <nav className="p-2 flex-1 overflow-y-auto">
                 {menuItems.map((item, i) => (
-                  <Link
-                    key={i}
-                    href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="block px-4 py-3.5 text-sm font-semibold text-text hover:bg-surface rounded-xl transition-colors no-underline"
-                  >
+                  <Link key={i} href={item.href} onClick={() => setMenuOpen(false)}
+                    className="block px-4 py-3.5 text-sm font-semibold text-text hover:bg-surface rounded-xl transition-colors no-underline">
                     {item.label}
                   </Link>
                 ))}
               </nav>
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-surface rounded-2xl p-4">
-                  <p className="text-xs text-text-muted">Besoin d&apos;aide ?</p>
-                  <p className="text-sm font-bold text-primary mt-0.5">+242 06 123 4567</p>
-                  <p className="text-[10px] text-text-muted mt-1">WhatsApp disponible 24/7</p>
+
+              {/* Currency switcher in menu */}
+              <div className="border-t border-border p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <DollarSign size={16} className="text-text-muted" />
+                  <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Devise</span>
                 </div>
+                <div className="flex gap-2">
+                  <button onClick={() => setCurrency("CDF")}
+                    className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                      currency === "CDF" ? "bg-primary text-white" : "bg-surface text-text-muted"
+                    }`}>
+                    FC — Franc
+                  </button>
+                  <button onClick={() => setCurrency("USD")}
+                    className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                      currency === "USD" ? "bg-primary text-white" : "bg-surface text-text-muted"
+                    }`}>
+                    $ — Dollar
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-border">
+                <p className="text-[10px] text-text-muted">Besoin d&apos;aide ?</p>
+                <p className="text-xs font-bold text-primary">+242 06 123 4567</p>
               </div>
             </motion.div>
           </>
