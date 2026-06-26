@@ -23,8 +23,8 @@ export function NavBar() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="nav-glass flex items-center justify-around px-1 py-1.5">
+    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md">
+      <div className="nav-glass rounded-3xl px-1 py-1.5 flex items-center justify-around">
         {tabs.map((tab) => {
           const active = isActive(tab);
           const Icon = tab.icon;
@@ -34,20 +34,19 @@ export function NavBar() {
               onClick={() => router.push(tab.path)}
               className="relative flex flex-col items-center justify-center gap-0.5 py-1.5 px-3 min-w-0 flex-1"
             >
+              {active && (
+                <motion.div
+                  layoutId="nav-pill"
+                  className="absolute inset-1 bg-primary/10 rounded-2xl"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
               <Icon
                 size={20}
                 strokeWidth={active ? 2.2 : 1.5}
-                className={clsx(
-                  "relative z-10 transition-colors duration-200",
-                  active ? "text-text" : "text-text-muted"
-                )}
+                className={clsx("relative z-10 transition-colors", active ? "text-primary" : "text-text-muted")}
               />
-              <span
-                className={clsx(
-                  "text-[9px] font-semibold relative z-10 transition-colors duration-200",
-                  active ? "text-text" : "text-text-muted"
-                )}
-              >
+              <span className={clsx("text-[9px] font-semibold relative z-10 transition-colors", active ? "text-primary" : "text-text-muted")}>
                 {tab.label}
               </span>
             </button>
